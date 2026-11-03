@@ -466,3 +466,25 @@ class Verification(commands.Cog):
 async def setup_verification(bot: commands.Bot) -> None:
     if bot.get_cog("Verification") is None:
         await bot.add_cog(Verification(bot))
+
+
+class PullbackBot(commands.Bot):
+    async def setup_hook(self) -> None:
+        await setup_verification(self)
+
+    async def on_ready(self) -> None:
+        print(f"Pullback bot logged in as {self.user}", flush=True)
+
+
+def main() -> None:
+    token = os.getenv("DISCORD_TOKEN", "").strip() or os.getenv("BOT_TOKEN", "").strip() or os.getenv("TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("Set DISCORD_TOKEN in Railway Variables.")
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = PullbackBot(command_prefix="-", intents=intents)
+    bot.run(token)
+
+
+if __name__ == "__main__":
+    main()
