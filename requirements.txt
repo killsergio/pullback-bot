@@ -1,5 +1,7 @@
-discord.py
 flask
 requests
 python-dotenv
 gunicorn
+discord.py>=2.6,<3
+aiohttp
+aiosqlite
